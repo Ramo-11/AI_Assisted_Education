@@ -1,0 +1,42 @@
+.main-div li, .main-div a, .main-div button {
+    text-decoration: none;
+}
+
+.main-div nav {
+    height: 100px;
+    background-color: #D3D3D3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 100px;
+}
+
+.main-div img {
+    width: 100px;
+}
+
+.logo_title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-div li {
+    list-style: none;
+    display: inline-block;
+    padding: 0px 50px;
+}
+
+.main-div a {
+    color: #00644E;
+    transition: all 0.3s ease 0s;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.profile_image {
+    border-radius: 50%;
+    text-align: center;
+    line-height: 1.6;
+    padding: 5px;
+  }
