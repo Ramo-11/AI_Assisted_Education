@@ -10,60 +10,65 @@
         <%- include("user_nav.ejs") %>
         <div class="main">
             <h1>Quiz</h1>
-            <h2>Networking</h2>
-            <div class="question">
-                <label>The most common protocol used for transferring files over the Internet is: </label>
-                <input type="text" id="n_1">
-            </div>
-            <div class="question">
-                <label>The application layer of the TCP/IP model provides services for: </label>
-                <input type="text" id="n_2">
-            </div>
-            <div class="question">
-                <label>A device that connects multiple networks together is called a: </label>
-                <input type="text" id="n_3">
-            </div>
-            <h2>Programming Language</h2>
-            <div class="question">
-                <label>JavaScript was created by: </label>
-                <input type="text" id="p_1">
-            </div>
-            <div class="question">
-                <label>The main feature that C++ have over C is: </label>
-                <input type="text" id="p_2">
-            </div>
-            <div class="question">
-                <label>In Java, variables are defined using the keyword: </label>
-                <input type="text" id="p_3">
-            </div>
-            <h2>Databases</h2>
-            <div class="question">
-                <label>A database that uses the SQL language is called: </label>
-                <input type="text" id="d_1">
-            </div>
-            <div class="question">
-                <label>In a database, a primary key uniquely identifies: </label>
-                <input type="text" id="d_2">
-            </div>
-            <div class="question">
-                <label>They keyword used to place conditions in queries is: </label>
-                <input type="text" id="d_3">
+            <div class="all_questions">
+                <div class="networking">
+                    <h2>Networking</h2>
+                    <div class="question">
+                        <label id="n_q1">FTP is: </label><br>
+                        <input type="text" id="n_1">
+                    </div>
+                    <div class="question">
+                        <label id="n_q2">SSL is: </label><br>
+                        <input type="text" id="n_2">
+                    </div>
+                </div>
+                <div class="programming_languages">
+                    <h2>Programming Languages</h2>
+                    <div class="question">
+                        <label id="p_q1">Python was created by: </label><br>
+                        <input type="text" id="p_1">
+                    </div>
+                    <div class="question">
+                        <label id="p_q2">What is Assembly Language?: </label><br>
+                        <input type="text" id="p_2">
+                    </div>
+                </div>
+                <div class="databases">
+                    <h2>Databases</h2>
+                    <div class="question">
+                        <label id="d_q1">A unique key used to identify a row is: </label><br>
+                        <input type="text" id="d_1">
+                    </div>
+                    <div class="question">
+                        <label id="d_q2">A key referencing another table is: </label><br>
+                        <input type="text" id="d_2">
+                    </div>
+                </div>
             </div>
             <button type="submit" onclick="submitQuiz()">Submit</button>
         </div>
         <script>
             async function submitQuiz() {
+                const networking_q1 = document.querySelector("#n_q1").textContent;
+                const networking_q2 = document.querySelector("#n_q2").textContent;
                 const networking_q1_answer = document.querySelector("#n_1").value;
                 const networking_q2_answer = document.querySelector("#n_2").value;
-                const networking_q3_answer = document.querySelector("#n_3").value;
 
+                const programming_q1 = document.querySelector("#p_q1").textContent;
+                const programming_q2 = document.querySelector("#p_q2").textContent;
                 const programming_q1_answer = document.querySelector("#p_1").value;
                 const programming_q2_answer = document.querySelector("#p_2").value;
-                const programming_q3_answer = document.querySelector("#p_3").value;
 
+                const databases_q1 = document.querySelector("#d_q1").textContent;
+                const databases_q2 = document.querySelector("#d_q2").textContent;
                 const databases_q1_answer = document.querySelector("#d_1").value;
                 const databases_q2_answer = document.querySelector("#d_2").value;
-                const databases_q3_answer = document.querySelector("#d_3").value;
+
+                // make sure all fields are filled
+                if (networking_q1_answer == "" || networking_q2_answer == "" || programming_q1_answer == "" || programming_q2_answer == "" || databases_q1_answer == "" || databases_q2_answer == "") {
+                    alert("Please fill out all fields");
+                    return;
+                }
 
                 const response = await fetch("/api/submitPractice", {
                     method: "POST",
@@ -72,19 +77,16 @@
                     },
                     body: JSON.stringify({
                         "networking": {
-                            "question1_answer": networking_q1_answer,
-                            "question2_answer": networking_q2_answer,
-                            "question3_answer": networking_q3_answer
+                            networking_q1: networking_q1_answer,
+                            networking_q2: networking_q2_answer,
                         },
                         "programming": {
-                            "question1_answer": programming_q1_answer,
-                            "question2_answer": programming_q2_answer,
-                            "question3_answer": programming_q3_answer
+                            programming_q1: programming_q1_answer,
+                            programming_q2: programming_q2_answer,
                         },
                         "databases": {
-                            "question1_answer": databases_q1_answer,
-                            "question2_answer": databases_q2_answer,
-                            "question3_answer": databases_q3_answer
+                            databases_q1: databases_q1_answer,
+                            databases_q2: databases_q2_answer,
                         }
                     })
                 });
