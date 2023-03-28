@@ -7,16 +7,20 @@
         <link rel="stylesheet" href="/styles/index.css">
     </head>
     <body>
-        <%- include("nav.ejs") %>
+      <% if (typeof(user) != "undefined") { %>
+        <%- include("user_nav.ejs") %>
+        <% } else { %>
+          <%- include("nav.ejs") %>
+        <% } %>
         <div class="main">
           <div class="about">
             <img src="/images/about_us.webp" alt="About Us Image">
-            <p>Hello world</p>
+            <p>Empower Your Learning with AI: Our platform harnesses the power of artificial intelligence to help you achieve your academic goals. With personalized guidance and cutting-edge technology, we make it easier than ever to master new subjects, boost your skills, and unlock your full potential.</p>
           </div>
           <div class="start-practicing">
             <h2>Start Practicing Now</h2>
             <p>Get better using AI</p>
-            <button>Practice Now</button>
+            <button><a class="create-project" href="/practice">Practice Now</a></button>
           </div>
         </div>
         <%- include("footer.ejs") %>

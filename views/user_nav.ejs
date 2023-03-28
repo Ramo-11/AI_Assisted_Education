@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/styles/general.css">
+        <link rel="stylesheet" href="/styles/nav.css">
+    </head>
+
+    <body>
+        <div class="main-div">
+            <nav>
+                <div class="logo_title">
+                    <a href="/"><img src="/images/logo.webp" alt="site logo"></a>
+                    <h1>AI Assisted Education</h1>
+                </div>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/practice">Practice</a></li>
+                    <li><a href="/reports">Reports</a></li>
+                    <li><h1><%=user.name%></h1></li>
+                    <li><button type="submit" id="logout" onclick="logout()">Logout</button></li>
+                </ul>
+            </nav>
+        </div>
+        <script>
+            async function logout(event) {
+                const result = fetch("/api/logout", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify ({})
+                }).then((res) => res)
+
+                const reqResult = await result
+                if (reqResult.status === 200) {
+                    location.href = reqResult.url;
+                }
+                else {}
+            }
+        </script>
+    </body>
+</html>
