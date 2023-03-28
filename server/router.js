@@ -1,7 +1,8 @@
 const express = require("express")
 const route = express.Router()
 
-const { createUser, getUsers, updateUser } = require("./UserController")
+const { createUser } = require("./UserController")
+const { handleSubmission } = require("./openai_api")
 const { isLoggedIn, isLoggedOut, logUserIn, logUserOut } = require("./auth")
 
 // *********** GET requests **********
@@ -13,5 +14,6 @@ route.get("/signup_and_login", isLoggedOut, (req, res) => res.render("signup_and
 route.post("/api/signup", isLoggedOut, createUser)
 route.post("/api/login", logUserIn)
 route.post("/api/logout", logUserOut)
+route.post("/api/submitPractice", isLoggedIn, handleSubmission)
 
 module.exports = route
