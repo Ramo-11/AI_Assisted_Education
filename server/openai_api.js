@@ -10,18 +10,11 @@ async function handleSubmission(req, res) {
     const userInput = req.body
     
     const prompt = "I am a website admin and want to evaluate students performances based on their answers. All questions are fill in the blank." +  
-                // "\nNetworking category:\n" +
-                // Object.keys(userInput['networking'])[0] + "\n" + Object.keys(userInput['networking'])[1] +
-                "\nProgramming category:\n" +
-                // Object.keys(userInput['programming'])[0] + "\n" + Object.keys(userInput['programming'])[1] +
-                "1- " + Object.keys(userInput['programming'])[0] + 
-                "\nDatabases category:\n" +
-                // Object.keys(userInput['databases'])[0] + "\n" + Object.keys(userInput['databases'])[1] +
-                "2- " + Object.keys(userInput['databases'])[0] +
-                // "\nBased on the students answers, generate a report that includes success percentage in each category. Keep it really short. " +
+                "\n Networking category:\n" + "1- " + Object.keys(userInput['networking'])[0] + 
+                "\nProgramming category:\n" + "2- " + Object.keys(userInput['programming'])[0] + 
+                "\nDatabases category:\n" + "3- " + Object.keys(userInput['databases'])[0] +
                 "\nBased on the student answer, give feedback for each question (one sentence max per question)." + 
-                // "Answers (same order as questions above): " + userInput['networking']['question1_answer'] + ", " + userInput['networking']['question2_answer'] + ", " + userInput['programming']['question1_answer'] + ", " + userInput['programming']['question2_answer'] + ", " + userInput['databases']['question1_answer'] + ", " + userInput['databases']['question2_answer'] + "."
-                "Answers: \n" + "1- " + userInput['programming'][Object.keys(userInput['programming'])[0]] + "\n2- " + userInput['databases'][Object.keys(userInput['databases'])[0]]
+                "Answers: \n" + "1- " + userInput['networking'][Object.keys(userInput['networking'])[0]] + "\n2- " + userInput['programming'][Object.keys(userInput['programming'])[0]] + "\n3- " + userInput['databases'][Object.keys(userInput['databases'])[0]]
 
                 console.log(prompt)
     try {
