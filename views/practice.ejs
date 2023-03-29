@@ -9,7 +9,10 @@
     <body>
         <%- include("user_nav.ejs") %>
         <div class="main">
-            <h1>Quiz</h1>
+            <div class="title">
+                <h1>Quiz</h1>
+                <p class="submitFlag" id="submitFlag" hidden></p>
+            </div>
             <div class="all_questions">
                 <div class="networking">
                     <h2>Networking</h2>
@@ -25,8 +28,8 @@
                 <div class="programming_languages">
                     <h2>Programming Languages</h2>
                     <div class="question">
-                        <label id="p_q1">Python was created by: </label><br>
-                        <input type="text" id="p_1">
+                        <label id="p_q1">Write a method in cpp that adds two numbers and returns their sum</label><br>
+                        <textarea type="text" id="p_1"></textarea>
                     </div>
                     <div class="question">
                         <label id="p_q2">What is Assembly Language?: </label><br>
@@ -36,8 +39,8 @@
                 <div class="databases">
                     <h2>Databases</h2>
                     <div class="question">
-                        <label id="d_q1">A unique key used to identify a row is: </label><br>
-                        <input type="text" id="d_1">
+                        <label id="d_q1">Write a query to get everything from table users where their age is between 18 and 25: </label><br>
+                        <textarea type="text" id="d_1"></textarea>
                     </div>
                     <div class="question">
                         <label id="d_q2">A key referencing another table is: </label><br>
@@ -65,10 +68,31 @@
                 const databases_q2_answer = document.querySelector("#d_2").value;
 
                 // make sure all fields are filled
-                if (networking_q1_answer == "" || networking_q2_answer == "" || programming_q1_answer == "" || programming_q2_answer == "" || databases_q1_answer == "" || databases_q2_answer == "") {
-                    alert("Please fill out all fields");
-                    return;
-                }
+                //if (networking_q1_answer == "" || networking_q2_answer == "" || programming_q1_answer == "" || programming_q2_answer == "" || databases_q1_answer == "" || databases_q2_answer == "") {
+                //    alert("Please fill out all fields");
+                //    return;
+                //}
+
+                //const response = await fetch("/api/submitPractice", {
+                 //   method: "POST",
+                  //  headers: {
+                 //       "Content-Type": "application/json"
+                 //   },
+                 //   body: JSON.stringify({
+                 //       "networking": {
+                 //           [networking_q1]: networking_q1_answer,
+                 //           [networking_q2]: networking_q2_answer,
+                 //       },
+                 //       "programming": {
+                  //          [programming_q1]: programming_q1_answer,
+                  //          [programming_q2]: programming_q2_answer,
+                  //      },
+                  //      "databases": {
+                  //          [databases_q1]: databases_q1_answer,
+                  //          [databases_q2]: databases_q2_answer,
+                  //      }
+                  //  })
+               // });
 
                 const response = await fetch("/api/submitPractice", {
                     method: "POST",
@@ -76,22 +100,27 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        "networking": {
-                            networking_q1: networking_q1_answer,
-                            networking_q2: networking_q2_answer,
-                        },
                         "programming": {
-                            programming_q1: programming_q1_answer,
-                            programming_q2: programming_q2_answer,
+                            [programming_q1]: programming_q1_answer
                         },
                         "databases": {
-                            databases_q1: databases_q1_answer,
-                            databases_q2: databases_q2_answer,
+                            [databases_q1]: databases_q1_answer
                         }
                     })
                 });
-                const data = await response.json();
-                console.log(data);
+                const reqResult = await response
+                const message = await response.json()
+
+                document.getElementById("submitFlag").innerHTML = "AI says: " + message["message"]
+                document.getElementById("submitFlag").style.display = "block"
+
+                if (reqResult.status === 200) {
+                    document.getElementById("submitFlag").style.color = "#eee"
+                    document.getElementById("submitFlag").style.backgroundColor = "#8550b1"
+                } else {
+                    document.getElementById("submitFlag").style.color = "#D8000C"
+                    document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                }
             }
         </script>
         <%- include("footer.ejs") %>
