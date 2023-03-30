@@ -22,8 +22,18 @@
   padding: 0 5rem;
 }
 
+.surrounding_div {
+  /* background-color: red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* gap: 1rem; */
+  /* padding: 3rem; */
+}
+
 .networking, .programming_languages, .databases {
-  width: 60rem;
+  width: 30rem;
   height: 20rem;
   display: flex;
   flex-direction: column;
@@ -40,7 +50,7 @@ textarea {
 	padding: 12px 15px;
 	margin: 8px 0;
 	width: 15rem;
-  outline: none;
+  height: 5rem;
 }
 
 h1 {
@@ -61,9 +71,19 @@ button {
   align-items: center;
 }
 
-p {
+.submitFlag, .proceedButton {
+  width: auto;
+  background-color: #8550b1;
+  color: #eeeeee;
+  padding: 10px;
+}
+
+.surrounding_div p {
   max-width: 50%;
 	padding: 10px;
 	border-radius: 3px 3px 3px 3px;
   text-align: center;
+  background-color: #8550b1;
+  color: #eeeeee;
+  width: 100%;
 }

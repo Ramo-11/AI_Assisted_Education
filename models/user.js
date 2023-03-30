@@ -17,10 +17,6 @@ const UserSchema = new mongoose.Schema({
     gender: {
         String
     },
-    role: {
-        type: String,
-        enum: ["student", "teacher"],
-    },
     createdAt: {
         type: Date,
         default: Date.now

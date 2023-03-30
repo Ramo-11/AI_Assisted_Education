@@ -14,6 +14,6 @@ route.get("/signup_and_login", isLoggedOut, (req, res) => res.render("signup_and
 route.post("/api/signup", isLoggedOut, createUser)
 route.post("/api/login", logUserIn)
 route.post("/api/logout", logUserOut)
-route.post("/api/submitPractice", isLoggedIn, handleSubmission)
+route.post("/api/submitQuiz", isLoggedIn, handleSubmission)
 
 module.exports = route

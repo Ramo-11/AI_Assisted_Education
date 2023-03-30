@@ -11,34 +11,45 @@
         <div class="main">
             <div class="title">
                 <h1>Quiz</h1>
-                <p class="submitFlag" id="submitFlag" hidden></p>
+                <p class="submitFlag" id="submitFlag" hidden>AI Says</p>
             </div>
             <div class="all_questions">
-                <div class="networking">
-                    <h2>Networking</h2>
-                    <div class="question">
-                        <label id="n_q1">What is an IP address used for? </label><br>
-                        <textarea type="text" id="n_1"></textarea>
+                <div class="surrounding_div">
+                    <p class="networkingFlag" id="networkingFlag" hidden></p>
+                    <div class="networking">
+                        <h2>Networking</h2>
+                        <div class="question">
+                            <label id="n_q1">What is an IP address used for? </label><br>
+                            <textarea type="text" id="n_1"></textarea>
+                        </div>
                     </div>
                 </div>
-                <div class="programming_languages">
-                    <h2>Programming Languages</h2>
-                    <div class="question">
-                        <label id="p_q1">Write a method in cpp to add 2 numbers and returns sum:</label><br>
-                        <textarea type="text" id="p_1"></textarea>
+                <div class="surrounding_div">
+                    <p class="programmingFlag" id="programmingFlag" hidden></p>
+                    <div class="programming_languages">
+                        <h2>Programming Languages</h2>
+                        <div class="question">
+                            <label id="p_q1">Write a method in cpp to add 2 numbers and returns sum:</label><br>
+                            <textarea type="text" id="p_1"></textarea>
+                        </div>
                     </div>
                 </div>
-                <div class="databases">
-                    <h2>Databases</h2>
-                    <div class="question">
-                        <label id="d_q1">Write a query to get everything from table users where age is between 18 and 25: </label><br>
-                        <textarea type="text" id="d_1"></textarea>
+                <div class="surrounding_div">
+                    <p class="databasesFlag" id="databasesFlag" hidden></p>
+                    <div class="databases">
+                        <h2>Databases</h2>
+                        <div class="question">
+                            <label id="d_q1">Write a query to get everything from table users where age is between 18 and 25: </label><br>
+                            <textarea type="text" id="d_1"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
-            <button type="submit" onclick="submitQuiz()">Submit</button>
+            <button type="submit" id="submitButton" onclick="submitQuiz()">Submit</button>
+            <button type="submit" id="proceedButton" onclick="generateQuestions()" style="display: none;">Proceed -></button>
         </div>
         <script>
+            var message = {}
             async function submitQuiz() {
                 const networking_q1 = document.querySelector("#n_q1").textContent;
                 const networking_q1_answer = document.querySelector("#n_1").value;
@@ -50,12 +61,12 @@
                 const databases_q1_answer = document.querySelector("#d_1").value;
 
                 // make sure all fields are filled
-                //if (networking_q1_answer == "" || networking_q2_answer == "" || programming_q1_answer == "" || programming_q2_answer == "" || databases_q1_answer == "" || databases_q2_answer == "") {
-                //    alert("Please fill out all fields");
-                //    return;
-                //}
+                if (networking_q1_answer == "" || programming_q1_answer == "" || databases_q1_answer == "") {
+                    alert("Please fill out all fields");
+                    return;
+                }
 
-                const response = await fetch("/api/submitPractice", {
+                const response = await fetch("/api/submitQuiz", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -73,18 +84,48 @@
                     })
                 });
                 const reqResult = await response
-                const message = await response.json()
+                message = await response.json()
 
-                document.getElementById("submitFlag").innerHTML = "AI says: " + message["message"]
                 document.getElementById("submitFlag").style.display = "block"
 
                 if (reqResult.status === 200) {
-                    document.getElementById("submitFlag").style.color = "#eee"
-                    document.getElementById("submitFlag").style.backgroundColor = "#8550b1"
+                    document.getElementById("networkingFlag").style.display = "block"
+                    document.getElementById("programmingFlag").style.display = "block"
+                    document.getElementById("databasesFlag").style.display = "block"
+                    document.getElementById("networkingFlag").innerHTML = message["message"]["feedback 1"] || message["message"]["Feedback 1"]
+                    document.getElementById("programmingFlag").innerHTML = message["message"]["feedback 2"] || message["message"]["Feedback 2"]
+                    document.getElementById("databasesFlag").innerHTML = message["message"]["feedback 3"] || message["message"]["Feedback 3"]
+                    
+                    document.getElementById("submitButton").style.display = "none";
+                    document.getElementById("proceedButton").style.display = "inline-block";
                 } else {
                     document.getElementById("submitFlag").style.color = "#D8000C"
                     document.getElementById("submitFlag").style.backgroundColor = "#FFBABA"
+                    document.getElementById("submitFlag").innerHTML = "AI faced an error while trying to process your response"
+                    
                 }
+            }
+
+            function generateQuestions() {
+                const textareas = document.querySelectorAll('textarea');
+                
+                textareas.forEach(textarea => textarea.value = '');
+                document.getElementById("submitFlag").style.display = "none"
+
+                document.getElementById("networkingFlag").style.display = "none"
+                document.getElementById("programmingFlag").style.display = "none"
+                document.getElementById("databasesFlag").style.display = "none"
+
+                document.getElementById("n_q1").innerHTML = message["message"]["networking"] || message["message"]["Networking"]
+                document.getElementById("p_q1").innerHTML = message["message"]["programming"] || message["message"]["Programming"]
+                document.getElementById("d_q1").innerHTML = message["message"]["databases"] || message["message"]["Databases"]
+
+                document.getElementById("submitButton").style.display = "inline-block";
+                document.getElementById("proceedButton").style.display = "none";
+            }
+
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
             }
         </script>
         <%- include("footer.ejs") %>
