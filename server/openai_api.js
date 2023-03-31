@@ -24,27 +24,19 @@ async function handleSubmission(req, res) {
                 "\nNetworking: new networking question" +
                 "\nProgramming: new programming question" +
                 "\nDatabases: new databases question" +
-                "\n you must follow this format. Feedback must start with the word Correct or Incorrect."
+                "\nyou must follow this format. Feedback must start with the word Correct or Incorrect, don't use colons in your answer"
 
     console.log(prompt)
 
     try {
-        const completion = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: prompt,
-            max_tokens: 500
-          });
+        // const completion = await openai.createCompletion({
+        //     model: "text-davinci-003",
+        //     prompt: prompt,
+        //     max_tokens: 1000
+        //   });
         console.log(completion['data'])
 
         const ai_text = completion.data.choices[0].text
-        // const ai_text ='\n' +
-        // '\n' +
-        // "Feedback 1: Incorrect. An IP address is used to identify a device (like a computer's) connected to a network and for communicating over the internet. \n" +
-        // 'Feedback 2: Correct!\n' +
-        // 'Feedback 3: Incorrect. The correct answer is: "SELECT * FROM users WHERE age BETWEEN 18 and 25". \n' +
-        // 'Networking: What is the main benefit of having a network?\n' +
-        // 'Programming: How can you initialize an array in a C++ program?\n' +
-        // 'Databases: How do you create a database table in MySQL?'
         const output = {}
         const feedbackRegex = /Feedback (\d+):\s*(.*)/gi
         let match

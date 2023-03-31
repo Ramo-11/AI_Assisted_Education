@@ -23,17 +23,14 @@
 }
 
 .surrounding_div {
-  /* background-color: red; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* gap: 1rem; */
-  /* padding: 3rem; */
 }
 
 .networking, .programming_languages, .databases {
-  width: 30rem;
+  width: 25rem;
   height: 20rem;
   display: flex;
   flex-direction: column;

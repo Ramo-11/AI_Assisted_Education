@@ -13,18 +13,23 @@ const passport = require("passport")
 // ********** Initialization **************
 require("./server/auth")
 require("dotenv").config()
-connectDB()
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json())
 app.use(express.static("public"))
-app.use(session({
-    secret: "kljasoiuj3io43@$3klnklv4515451$232s:",
-    cookie: { maxAge: 86400000 }, // 24 hours
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI })
-}))
+
+try {
+    connectDB()
+    app.use(session({
+        secret: "kljasoiuj3io43@$3klnklv4515451$232s:",
+        cookie: { maxAge: 86400000 }, // 24 hours
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({ mongoUrl: process.env.MONGO_URI })
+    }))
+} catch (error) {
+    console.log("Unable to connect to db")
+}
 
 app.use(passport.initialize())
 app.use(passport.session())
