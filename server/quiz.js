@@ -4,10 +4,9 @@ const user = require("../models/user")
 async function getUserQuizzes(req, res) {
     try {
         const userEmail = req.params.email
-        console.log(userEmail)
         const user_ = await user.findOne({ email: userEmail })
         
-        const quizzes = await quiz.find({ user: user_._id }, { author: 0 })
+        const quizzes = await quiz.find({ user: user_._id }, { _id: 0, user: 0 })
 
         console.log("quizzes were retrieved successfully")
         return res.status(200).json({ message: quizzes });

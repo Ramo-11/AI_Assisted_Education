@@ -1,101 +1,64 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Quiz Results</title>
-  </head>
-  <body>
-    <button id="getUserQuizzesButton" data-email="<%= user.email %>">Get User Quizzes</button>
-    <h1>Quiz Results</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Total Correct</th>
-          <th>Percentage</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Networking</td>
-          <td id="networkingCorrect"></td>
-          <td id="networkingPercent"></td>
-        </tr>
-        <tr>
-          <td>Programming</td>
-          <td id="programmingCorrect"></td>
-          <td id="programmingPercent"></td>
-        </tr>
-        <tr>
-          <td>Databases</td>
-          <td id="databasesCorrect"></td>
-          <td id="databasesPercent"></td>
-        </tr>
-      </tbody>
-    </table>
+    <head>
+        <title>Quiz Results</title>
+        <link rel="stylesheet" href="/styles/general.css">
+        <link rel="stylesheet" href="/styles/reports.css">
+    </head>
+    <body>
+        <%- include("user_nav.ejs") %>
+        <button id="getUserQuizzesButton" data-email="<%= user.email %>">Get User Quizzes</button>
+        <div class="container">
+            <h1>Quiz Results</h1>
+            <div class="networking">
+                <span>Networking:</span>
+                <span class="percentage"></span>
+            </div>
+            <div class="programming">
+                <span>Programming:</span>
+                <span class="percentage"></span>
+          </div>
+          <div class="databases">
+              <span>Databases:</span>
+              <span class="percentage"></span>
+          </div>
+        </div>
 
-    <script>
-        const getUserQuizzesButton = document.querySelector('#getUserQuizzesButton');
-        const email = getUserQuizzesButton.dataset.email;
+        <script>
+            const getUserQuizzesButton = document.querySelector('#getUserQuizzesButton');
+            const email = getUserQuizzesButton.dataset.email;
 
-        getUserQuizzes(email);
-        async function getUserQuizzes(email) {
-            // Make a GET request to the backend to get the quizzes
-            const result = await fetch(`/api/getUserQuizzes/${email}`, {
-                method: "GET"
-            })
-            const reqResult = await result
-            let quizzes = await result.json()
-            
-            console.log("*********")
-            console.log(quizzes)
-            console.log("*********")
-            if (reqResult.status === 200) {
-                console.log(quizzes)
-                // location.href = reqResult.url
+            getUserQuizzes(email);
+            async function getUserQuizzes(email) {
+                // Make a GET request to the backend to get the quizzes
+                const result = await fetch(`/api/getUserQuizzes/${email}`, {
+                    method: "GET"
+                })
+                const reqResult = await result
+                let quizzes = await result.json()
+                
+                if (reqResult.status === 200) {
+                    const categories = ['networking', 'programming', 'databases'];
+                    const totalCorrectAnswers = { networking: 0, programming: 0, databases: 0 };
+
+                    // Loop through each quiz and update the total number of correct answers for each category
+                    for (const quiz of quizzes.message) {
+                        for (const category of categories) {
+                            if (quiz[category].q_correct) {
+                                totalCorrectAnswers[category]++;
+                            }
+                        }
+                    }
+
+                    let totalQuestions = quizzes.message.length
+                    for (const category of categories) {
+                        const percentage = ((totalCorrectAnswers[category] / totalQuestions) * 100).toFixed(2);
+                        const percentageSpan = document.querySelector(`.${category} .percentage`);
+                        percentageSpan.textContent = `${percentage}%`;
+                    }
+                }
             }
-        }
-        
-    //   fetch(url)
-    //     .then(response => response.json())
-    //     .then(quizzes => {
-    //       // Initialize the totals and correct counts
-    //       let networkingTotal = 0;
-    //       let programmingTotal = 0;
-    //       let databasesTotal = 0;
-    //       let networkingCorrect = 0;
-    //       let programmingCorrect = 0;
-    //       let databasesCorrect = 0;
-
-    //       // Iterate over the quizzes to calculate the totals and correct counts
-    //       quizzes.forEach(quiz => {
-    //         if (quiz.networking.q_correct) {
-    //           networkingCorrect++;
-    //         }
-    //         if (quiz.programming.q_correct) {
-    //           programmingCorrect++;
-    //         }
-    //         if (quiz.databases.q_correct) {
-    //           databasesCorrect++;
-    //         }
-    //         networkingTotal++;
-    //         programmingTotal++;
-    //         databasesTotal++;
-    //       });
-
-    //       // Calculate the percentages
-    //       const networkingPercent = networkingTotal > 0 ? networkingCorrect / networkingTotal * 100 : 0;
-    //       const programmingPercent = programmingTotal > 0 ? programmingCorrect / programmingTotal * 100 : 0;
-    //       const databasesPercent = databasesTotal > 0 ? databasesCorrect / databasesTotal * 100 : 0;
-
-    //       // Update the table with the totals and percentages
-    //       document.getElementById("networkingCorrect").textContent = networkingCorrect;
-    //       document.getElementById("networkingPercent").textContent = `${networkingPercent}%`;
-    //       document.getElementById("programmingCorrect").textContent = programmingCorrect;
-    //       document.getElementById("programmingPercent").textContent = `${programmingPercent}%`;
-    //       document.getElementById("databasesCorrect").textContent = databasesCorrect;
-    //       document.getElementById("databasesPercent").textContent = `${databasesPercent}%`;
-    //     })
-    //     .catch(error => console.error(error));
-    </script>
-  </body>
+        </script>
+        <%- include("footer.ejs") %>
+    </body>
 </html>

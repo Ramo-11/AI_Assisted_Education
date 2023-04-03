@@ -1,0 +1,39 @@
+.container {
+    width: 500px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .networking,
+  .programming,
+  .databases {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  .networking span,
+  .programming span,
+  .databases span {
+    font-size: 1.2em;
+    margin-right: 10px;
+  }
+  
+  .percentage {
+    display: inline-block;
+    height: 20px;
+    width: 200px;
+    border: 1px solid black;
+    margin-right: 10px;
+    position: relative;
+  }
+
+  #getUserQuizzesButton {
+    display: none;
+  }

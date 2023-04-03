@@ -17,7 +17,7 @@ async function handleSubmission(req, res) {
                 "\nDatabases quuestion:\n" + "3- " + Object.keys(userInput['databases'])[0] + "\nAnswer: " + userInput['databases'][Object.keys(userInput['databases'])[0]] +
                 "\nFor each question, provide feedback indicating whether the answer is correct or not, and give the correct answer if it is not correct." + 
                 "\nAdditionaly, generate one new question per category." +
-                "\nYour response should be in the following format:" + 
+                "\nYour response MUST be in the following format:" + 
                 "\nFeedback 1: your feedback" +
                 "\nFeedback 2: your feedback" +
                 "\nFeedback 3: your feedback" +
@@ -26,14 +26,12 @@ async function handleSubmission(req, res) {
                 "\nDatabases: new databases question" +
                 "\nyou must follow this format. Feedback must start with the word Correct or Incorrect, don't use colons in your answer"
 
-    console.log(prompt)
-
     try {
-        // const completion = await openai.createCompletion({
-        //     model: "text-davinci-003",
-        //     prompt: prompt,
-        //     max_tokens: 1000
-        //   });
+        const completion = await openai.createCompletion({
+            model: "text-davinci-003",
+            prompt: prompt,
+            max_tokens: 2000
+          });
         console.log(completion['data'])
 
         const ai_text = completion.data.choices[0].text
@@ -77,7 +75,7 @@ async function handleSubmission(req, res) {
     } catch (error) {
         console.log("Unable to generate report")
         console.log(error)
-        return res.status(400).send({ message: "Unable to generate report" })
+        return res.status(400).send({ message: "Error parsing AI response: " + completion.data.choices[0].text })
     }
 }
 
